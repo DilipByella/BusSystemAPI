@@ -17,23 +17,35 @@ using System.Threading.Tasks;
 
 namespace BusSystem.API.Controllers
 {
-    [Route("api/[controller]")]
+   // [Route("api/[controller]")]
+    //[ApiController]
     [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/{v.apiVersion}/sample")]
     public class UserController : ControllerBase
     {
         private UserServices _userServices;
-        public UserController(UserServices userServices)
+        private readonly ILogger<UserController> _logger;
+        public UserController(UserServices userServices, ILogger<UserController> logger)
         {
             _userServices = userServices;
+        }
+        [HttpGet]
+
+        public IActionResult Get()
+        {
+            return new OkObjectResult("Using versioning");
         }
         [HttpPost("SaveUser")]
         public IActionResult SaveUser(User user)
         {
+            _logger.LogInformation("User Created Successfully");
             return Ok(_userServices.SaveUser(user));
         }
         [HttpPut("UpdateUser")]
         public IActionResult UpdateUser(User user)
         {
+             _logger.LogInformation("User Updated Successfully");
             return Ok(_userServices.UpdateUser(user));
         }
         [HttpGet("GetUser")]
