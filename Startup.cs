@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.aspnetcore.mvc.versioning;
 namespace BusSystem.API
 {
     public class Startup
@@ -88,6 +89,13 @@ namespace BusSystem.API
             services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).AddNewtonsoftJson(
                 options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             services.AddControllers();
+            services.AddControllers();
+            services.AddApiVersioning(x =>
+            {
+                x.DefaultApiVersion = new ApiVersion(1, 0);
+                x.AssumeDefaultVersionWhenUnspecified = true;
+                x.ReportApiVersions = true;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BusSystem.API", Version = "v1" });
